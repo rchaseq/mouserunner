@@ -3,8 +3,8 @@ let game;
 // global game options
 let gameOptions = {
     platformStartSpeed: 350,
-    spawnRange: [50, 275, 350],
-    platformSizeRange: [50, 275, 350],
+    spawnRange: [50, 350],
+    platformSizeRange: [50, 350],
     playerGravity: 900,
     jumpForce: 400,
     playerStartPosition: 200,
@@ -37,12 +37,19 @@ class playGame extends Phaser.Scene{
     constructor(){
         super("PlayGame");
     }
+
     preload(){
         this.load.image('platform', 'platform.png');
         this.load.image('player', 'player.png');
         this.load.audio('squeak', 'squeak.mp3');
     }
+
     create(){
+
+        //score
+        var score = 0;
+        var scoreText;
+        scoreText = this.add.text(24, 24, 'Score: 0', { font: 'arial', fontSize: '48px', fill: '#000' });
 
         // group with all active platforms
         this.platformGroup = this.add.group({
@@ -50,6 +57,10 @@ class playGame extends Phaser.Scene{
         // once a platform is removed, it's added to the pool
             removeCallback: function(platform){
                 platform.scene.platformPool.add(platform)
+
+        //score is how many platforms successfully cleared
+                score ++;
+                scoreText.setText('Score: ' + score);
             }
         });
 
@@ -62,7 +73,6 @@ class playGame extends Phaser.Scene{
             }
         });
         
-
         // number of consecutive jumps made by the player
         this.playerJumps = 0;
 
@@ -98,6 +108,7 @@ class playGame extends Phaser.Scene{
         }
         platform.displayWidth = platformWidth;
         this.nextPlatformDistance = Phaser.Math.Between(gameOptions.spawnRange[0], gameOptions.spawnRange[1]);
+
     }
 
         // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
