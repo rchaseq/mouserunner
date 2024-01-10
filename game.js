@@ -50,7 +50,7 @@ class playGame extends Phaser.Scene{
         //score
         var score = 0;
         var scoreText = this.add.text(24, 24, 'Score: 0', { font: '20px arial', fill: 'black' });
-        
+
         // group with all active platforms
         this.platformGroup = this.add.group({
 
@@ -125,13 +125,7 @@ class playGame extends Phaser.Scene{
 
         // game over
         if(this.player.y > game.config.height){
-            this.time.addEvent({
-                delay: 15000,
-                callback: function(){
-                    this.scene.start("PlayGame");
-                },
-                callbackScope: this
-            });
+                this.scene.start("PlayGame");
         }
         this.player.x = gameOptions.playerStartPosition;
 
