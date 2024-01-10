@@ -48,8 +48,7 @@ class playGame extends Phaser.Scene{
 
         //score
         var score = 0;
-        var scoreText;
-        scoreText = this.add.text(24, 24, 'Score: 0', { font: 'arial', fontSize: '48px', fill: '#000' });
+        var scoreText = this.add.text(24, 24, 'Score: 0', { font: '20px arial', fill: 'black' });
 
         // group with all active platforms
         this.platformGroup = this.add.group({
