@@ -50,9 +50,7 @@ class playGame extends Phaser.Scene{
         //score
         var score = 0;
         var scoreText = this.add.text(24, 24, 'Score: 0', { font: '20px arial', fill: 'black' });
-        let highScore = localStorage.getItem(gameOptions.localStorageName) == null ? 0 : localStorage.getItem(gameOptions.localStorageName);
-        var highScoreText = this.add.text(24, 54, 'Highest score: ' + highScore, { font: '20px Arial', fill: 'black' });;
-
+        
         // group with all active platforms
         this.platformGroup = this.add.group({
 
@@ -110,27 +108,30 @@ class playGame extends Phaser.Scene{
         }
         platform.displayWidth = platformWidth;
         this.nextPlatformDistance = Phaser.Math.Between(gameOptions.spawnRange[0], gameOptions.spawnRange[1]);
-
     }
 
         // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
-    jump(){
-        if(this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps)){
-            if(this.player.body.touching.down){
-                this.playerJumps = 0;
-            }
-            this.player.setVelocityY(gameOptions.jumpForce * -1);
-            this.playerJumps ++;
-            this.sound.play('squeak');
+        jump(){
+            if(this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps)){
+                if(this.player.body.touching.down){
+                    this.playerJumps = 0;
+                }
+                this.player.setVelocityY(gameOptions.jumpForce * -1);
+                this.playerJumps ++;
+                this.sound.play('squeak');
         }
     }
     update(){
 
         // game over
         if(this.player.y > game.config.height){
-            this.scene.start("PlayGame");
-        // updating top score in local storage
-            localStorage.setItem(gameOptions.localStorageName, Math.max(this.highScore));
+            this.time.addEvent({
+                delay: 15000,
+                callback: function(){
+                    this.scene.start("PlayGame");
+                },
+                callbackScope: this
+            });
         }
         this.player.x = gameOptions.playerStartPosition;
 
