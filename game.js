@@ -8,7 +8,8 @@ let gameOptions = {
     playerGravity: 900,
     jumpForce: 400,
     playerStartPosition: 200,
-    jumps: 2
+    jumps: 2,
+    localStorageName: "mouserunner"
 }
 
 window.onload = function() {
@@ -49,6 +50,8 @@ class playGame extends Phaser.Scene{
         //score
         var score = 0;
         var scoreText = this.add.text(24, 24, 'Score: 0', { font: '20px arial', fill: 'black' });
+        let highScore = localStorage.getItem(gameOptions.localStorageName) == null ? 0 : localStorage.getItem(gameOptions.localStorageName);
+        var highScoreText = this.add.text(24, 54, 'Highest score: ' + highScore, { font: '20px Arial', fill: 'black' });;
 
         // group with all active platforms
         this.platformGroup = this.add.group({
@@ -126,8 +129,11 @@ class playGame extends Phaser.Scene{
         // game over
         if(this.player.y > game.config.height){
             this.scene.start("PlayGame");
+        // updating top score in local storage
+            localStorage.setItem(gameOptions.localStorageName, Math.max(this.highScore));
         }
         this.player.x = gameOptions.playerStartPosition;
+
 
         // recycling platforms
         let minDistance = game.config.width;
@@ -146,6 +152,7 @@ class playGame extends Phaser.Scene{
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
         }
     }
+
 };
 function resize(){
     let canvas = document.querySelector("canvas");
