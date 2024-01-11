@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
-	<head>
+<head>
+<script>		
+	// Check touch input
+	var IS_TOUCH	= false;
+	window.addEventListener('touchstart', function()
+	{			
+		IS_TOUCH	= true;
+	});
+</script>
         <style type = "text/css">
             body{
                 background: #1904d300;
