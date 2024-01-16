@@ -17,9 +17,9 @@ window.onload = function() {
     // object containing configuration options
     let gameConfig = {
         type: Phaser.AUTO,
-        width: 750,
-        height: 500,
-        scene: playGame,
+        width: 800,
+        height: 600,
+        scene: titleScene, playGame,
         backgroundColor: 0x87CEEB,
 
     // physics settings
@@ -27,11 +27,58 @@ window.onload = function() {
             default: "arcade"
         }
     }
+
     game = new Phaser.Game(gameConfig);
     window.focus();
     resize();
     window.addEventListener("resize", resize, false);
 }
+
+// titleScene scene
+class titleScene extends Phaser.Scene{
+    constructor(){
+        super("TitleScene");
+    }
+
+    preload(){
+        this.load.image('player', 'player.png');
+        this.load.audio('squeak', 'squeak.mp3');
+    }
+    create(){
+
+        this.centerX = game.config.width/2;
+        this.centerY = game.config.height/2;
+
+        this.add.text(this.centerX, this.centerY, 'Mouse Runner', { font: '50px arial', fill: 'black' }).setOrigin(0.5, 0.5);
+
+        const mouse = this.add.image(this.centerX - 10, this.centerY + 85, 'player');
+        
+        mouse.setScale(3); // Resize the image
+
+            mouse.on('pointerover', function (pointer)
+            {
+                mouse.setScale(4);
+            });
+
+            mouse.on('pointerout', function (pointer)
+            {
+                mouse.setScale(3);
+            });
+
+
+        this.add.text(this.centerX - 10, this.centerY + 150, 'Click mouse to start', { font: '20px arial', fill: 'black' }).setOrigin(0.5, 0.5);
+
+        this.add.text(this.centerX + 200, this.centerY + 300, 'by Rowan Quinn', { font: '15px arial', fill: 'black' }).setOrigin(0.5, 0.5);
+
+        
+        mouse.setInteractive({cursor: 'pointer'}).on('pointerdown', function(pointer){
+            this.sound.play('squeak');
+            this.scene.remove('TitleScene', titleScene, true);
+            this.scene.add('PlayGame', playGame, true);
+            },this);
+
+}}
+
 
 // playGame scene
 class playGame extends Phaser.Scene{
@@ -88,6 +135,7 @@ class playGame extends Phaser.Scene{
 
         // checking for input
         this.input.on('pointerdown', this.jump, this);
+
     }
 
         // the core of the script - platforms are added from the pool or created on the fly
@@ -124,7 +172,7 @@ class playGame extends Phaser.Scene{
     update(){
 
         // game over
-        if(this.player.y > game.config.height){
+        if(this.player.y > game.config.height + 200){
                 this.scene.start("PlayGame");
         }
         this.player.x = gameOptions.playerStartPosition;
@@ -149,6 +197,46 @@ class playGame extends Phaser.Scene{
     }
 
 };
+
+/*
+// levelTwo scene
+class levelTwo extends Phaser.Scene{
+    constructor(){
+        super("LevelTwo");
+    }
+
+    preload(){
+    }
+
+    create(){
+
+    }
+    update(){
+
+    }
+*/
+
+/*
+// gameOver scene
+class gameOver extends Phaser.Scene{
+    constructor(){
+        super("GameOver");
+    }
+
+    preload(){
+    }
+
+    create(){
+
+    }
+    update(){
+
+    }
+*/
+
+
+
+
 function resize(){
     let canvas = document.querySelector("canvas");
     let windowWidth = window.innerWidth;
