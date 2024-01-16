@@ -49,9 +49,9 @@ class titleScene extends Phaser.Scene{
         this.centerX = game.config.width/2;
         this.centerY = game.config.height/2;
 
-        this.add.text(this.centerX, this.centerY, 'Mouse Runner', { font: '50px arial', fill: 'black' }).setOrigin(0.5, 0.5);
+        this.add.text(this.centerX, this.centerY -100, 'Mouse Runner', { font: '50px arial', fill: 'black' }).setOrigin(0.5, 0.5);
 
-        const mouse = this.add.image(this.centerX - 10, this.centerY + 85, 'player');
+        const mouse = this.add.image(this.centerX - 10, this.centerY - 25, 'player');
         
         mouse.setScale(3); // Resize the image
 
@@ -66,9 +66,9 @@ class titleScene extends Phaser.Scene{
             });
 
 
-        this.add.text(this.centerX - 10, this.centerY + 150, 'Click mouse to start', { font: '20px arial', fill: 'black' }).setOrigin(0.5, 0.5);
+        this.add.text(this.centerX - 10, this.centerY + 50, 'Click mouse to start', { font: '20px arial', fill: 'black' }).setOrigin(0.5, 0.5);
 
-        this.add.text(this.centerX + 200, this.centerY + 300, 'by Rowan Quinn', { font: '15px arial', fill: 'black' }).setOrigin(0.5, 0.5);
+        this.add.text(this.centerX + 100, this.centerY + 200, 'by Rowan Quinn', { font: '15px arial', fill: 'black' }).setOrigin(0.5, 0.5);
 
         
         mouse.setInteractive({cursor: 'pointer'}).on('pointerdown', function(pointer){
@@ -173,7 +173,7 @@ class playGame extends Phaser.Scene{
 
         // game over
         if(this.player.y > game.config.height + 200){
-                this.scene.start("PlayGame");
+                this.scene.start('PlayGame');
         }
         this.player.x = gameOptions.playerStartPosition;
 
@@ -233,8 +233,6 @@ class gameOver extends Phaser.Scene{
 
     }
 */
-
-
 
 
 function resize(){
