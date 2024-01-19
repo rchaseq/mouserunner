@@ -131,8 +131,8 @@ class playGame extends Phaser.Scene{
         // Function to save the highest score
         function saveHighestScore(score) {
             if (score > highestScore) {
-                highestScore = score;
-                localStorage.setItem('highestScore', highestScore - 2); //Top score otherwise adds 1-3 points to the score before saving, unsure why...this will balance it out until I figure it out
+                highestScore = score - 3; //Top score otherwise adds 3 points to the score before saving, unsure why...this will balance it out until I figure it out
+                localStorage.setItem('highestScore', highestScore);
             }
         };
 
