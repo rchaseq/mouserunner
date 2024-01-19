@@ -39,7 +39,7 @@ window.onload = function() {
 class titleScene extends Phaser.Scene{
     constructor(){
     //super() inherits all the characteristics of the Phaser "scene" class
-        super("TitleScene");
+        super('TitleScene');
     }
 
     preload(){
@@ -92,14 +92,14 @@ class titleScene extends Phaser.Scene{
 // playGame scene
 class playGame extends Phaser.Scene{
     constructor(){
-        super("PlayGame");
+        super('PlayGame');
     }
 
     preload(){
         this.load.image('platform', 'platform.png');
         this.load.image('player', 'player.png');
-        this.load.image('pause', 'pause.png');
-        this.load.image('mute', 'mute.png');
+        //this.load.image('pause', 'pause.png');
+        //this.load.image('mute', 'mute.png');
         this.load.audio('squeak', 'squeak.mp3');
     }
 
@@ -132,14 +132,15 @@ class playGame extends Phaser.Scene{
         function saveHighestScore(score) {
             if (score > highestScore) {
                 highestScore = score;
-                localStorage.setItem('highestScore', highestScore);
+                localStorage.setItem('highestScore', highestScore - 2); //Top score otherwise adds 1-3 points to the score before saving, unsure why...this will balance it out until I figure it out
             }
         };
 
         // Function to update the highest score
         function updateHighScore(){
             if (score > getHighestScore()){
-                saveHighestScore(score)
+                saveHighestScore(score);
+                topScoreText.setText('Top score: ' + highestScore);
             }
         };
 
@@ -174,7 +175,7 @@ class playGame extends Phaser.Scene{
         //score is how many platforms successfully cleared
                 score ++;
                 scoreText.setText('Score: ' + score);
-                updateHighScore();
+                updateHighScore(highestScore);
             }
         });
 
@@ -194,8 +195,6 @@ class playGame extends Phaser.Scene{
         // adding a platform to the game, the arguments are platform width and x position
         this.addPlatform(game.config.width, game.config.width / 2);
 
-        
-
         // adding the player
         this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height / 2, 'player');
         this.player.setGravityY(gameOptions.playerGravity);
@@ -205,8 +204,6 @@ class playGame extends Phaser.Scene{
 
         // checking for input
         this.input.on('pointerdown', this.jump, this);
-
-    
     }
 
         // the core of the script - platforms are added from the pool or created on the fly
@@ -228,8 +225,6 @@ class playGame extends Phaser.Scene{
         platform.displayWidth = platformWidth;
         this.nextPlatformDistance = Phaser.Math.Between(gameOptions.spawnRange[0], gameOptions.spawnRange[1]);
     }
-
-    
 
         // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
         jump(){
